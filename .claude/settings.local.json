@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(tail:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(sleep:*)",
+      "Bash(curl:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(uv sync:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(./run_local.ps1:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -File scripts/*)",
+      "WebSearch",
+      "Bash(powershell -File scripts/test_mcp_curl.ps1)",
+      "Bash(powershell -File scripts/setup-infrastructure.ps1 -Environment dev -Location westus2)",
+      "Bash(az cosmosdb list:*)",
+      "Bash(az cosmosdb show:*)",
+      "Bash(az resource list:*)",
+      "Bash(az cosmosdb sql database list:*)",
+      "Bash(az cosmosdb sql container list:*)",
+      "Bash(az cosmosdb sql container show:*)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "outputStyle": "Explanatory"
+}

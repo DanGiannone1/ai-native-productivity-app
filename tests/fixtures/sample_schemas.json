@@ -1,0 +1,41 @@
+{
+  "task": {
+    "title": {"type": "string", "required": true},
+    "description": {"type": "string"},
+    "status": {
+      "type": "enum",
+      "enum_values": ["todo", "in-progress", "done"],
+      "default": "todo"
+    },
+    "priority": {
+      "type": "enum",
+      "enum_values": ["low", "medium", "high", "urgent"]
+    },
+    "dueDate": {"type": "datetime"},
+    "tags": {"type": "array"}
+  },
+  "goal": {
+    "title": {"type": "string", "required": true},
+    "description": {"type": "string"},
+    "targetDate": {"type": "datetime"},
+    "status": {
+      "type": "enum",
+      "enum_values": ["active", "achieved", "abandoned"],
+      "default": "active"
+    },
+    "milestones": {"type": "array"},
+    "progress": {"type": "number", "default": 0}
+  },
+  "habit": {
+    "name": {"type": "string", "required": true},
+    "description": {"type": "string"},
+    "frequency": {
+      "type": "enum",
+      "enum_values": ["daily", "weekly", "monthly"],
+      "default": "daily"
+    },
+    "streak": {"type": "number", "default": 0},
+    "lastCompleted": {"type": "datetime"},
+    "active": {"type": "boolean", "default": true}
+  }
+}
