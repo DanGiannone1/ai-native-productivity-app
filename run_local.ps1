@@ -16,18 +16,41 @@ $python = if ($IsWindows -or $env:OS -eq "Windows_NT") {
     "./.venv/bin/python"
 }
 
-# Load .env file
-if (Test-Path ".env") {
-    Write-Host "Loading environment from .env..." -ForegroundColor Green
-    Get-Content ".env" | ForEach-Object {
-        if ($_ -match '^\s*([^#][^=]+)=(.*)$') {
-            $key = $matches[1].Trim()
-            $value = $matches[2].Trim()
-            [Environment]::SetEnvironmentVariable($key, $value, "Process")
+# --- Load Environment Variables ---
+function Load-EnvFile {
+    param([string]$Path)
+    if (Test-Path $Path) {
+        Get-Content $Path | ForEach-Object {
+            if ($_ -match "^\s*([^#=]+?)\s*=\s*(.*)$") {
+                $name = $matches[1].Trim()
+                $value = $matches[2].Trim()
+                # Remove surrounding quotes if present
+                if ($value -match '^"(.*)"$' -or $value -match "^'(.*)'$") {
+                    $value = $matches[1]
+                }
+                [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
+            }
         }
+        return $true
     }
+    return $false
+}
+
+# Load environment-specific .env file (e.g., .env.dev, .env.prod)
+$environment = $env:ENVIRONMENT
+if (-not $environment) {
+    $environment = "dev"  # Default to dev
+}
+
+$envSpecificFile = Join-Path $projectRoot ".env.$environment"
+$fallbackFile = Join-Path $projectRoot ".env"
+
+if (Load-EnvFile -Path $envSpecificFile) {
+    Write-Host "Loaded environment from .env.$environment" -ForegroundColor Gray
+} elseif (Load-EnvFile -Path $fallbackFile) {
+    Write-Host "Loaded environment from .env (fallback)" -ForegroundColor Gray
 } else {
-    Write-Host "Warning: .env file not found. Using environment defaults." -ForegroundColor Yellow
+    Write-Host "WARNING: No .env or .env.$environment file found" -ForegroundColor Yellow
     Write-Host "Run 'cp .env.example .env' and configure your settings." -ForegroundColor Yellow
 }
 

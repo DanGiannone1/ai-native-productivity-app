@@ -6,8 +6,15 @@ Loads and validates environment variables.
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment-specific file based on ENVIRONMENT variable
+env = os.getenv("ENVIRONMENT", "dev")
+env_file = f".env.{env}"
+
+if os.path.exists(env_file):
+    load_dotenv(env_file)
+else:
+    # Fallback to standard .env
+    load_dotenv()
 
 
 class Config:
