@@ -50,8 +50,16 @@ switch ($Command) {
         & $python scripts/seed_data.py
     }
     "test" {
-        Write-Host "Running tests..." -ForegroundColor Cyan
+        Write-Host "Running all tests..." -ForegroundColor Cyan
         & $python -m pytest tests/ -v
+    }
+    "test-unit" {
+        Write-Host "Running unit tests..." -ForegroundColor Cyan
+        & $python -m pytest tests/ -v -m unit
+    }
+    "test-integration" {
+        Write-Host "Running integration tests..." -ForegroundColor Cyan
+        & $python -m pytest tests/ -v -m integration
     }
     "test-local" {
         Write-Host "Running local service tests..." -ForegroundColor Cyan
@@ -70,6 +78,19 @@ switch ($Command) {
         Write-Host "Formatting code with ruff..." -ForegroundColor Cyan
         & $python -m ruff format src/productivity_mcp/ scripts/
     }
+    "type-check" {
+        Write-Host "Running mypy type checker..." -ForegroundColor Cyan
+        & $python -m mypy src/productivity_mcp/
+    }
+    "check-all" {
+        Write-Host "Running all checks (lint + type-check + test)..." -ForegroundColor Cyan
+        Write-Host "`n[1/3] Linting..." -ForegroundColor Yellow
+        & $python -m ruff check src/productivity_mcp/ scripts/
+        Write-Host "`n[2/3] Type checking..." -ForegroundColor Yellow
+        & $python -m mypy src/productivity_mcp/
+        Write-Host "`n[3/3] Testing..." -ForegroundColor Yellow
+        & $python -m pytest tests/ -v
+    }
     "migrate-serverless" {
         Write-Host "Migrating to serverless Cosmos DB..." -ForegroundColor Cyan
         & powershell scripts/migrate-to-serverless.ps1 -Environment dev
@@ -80,18 +101,25 @@ Productivity MCP Server - Local Runner
 
 Usage: .\run_local.ps1 <command>
 
-Commands:
+Infrastructure:
   setup              Create Azure infrastructure (resource groups, Cosmos DB, etc.)
   migrate-serverless Migrate Cosmos DB to serverless mode (recommended for dev)
-  mcp                Start the FastMCP server (default port 8000)
   init               Initialize Cosmos DB container (if not using setup)
   seed               Seed sample data for testing
-  test               Run pytest test suite
-  test-local         Test services directly (without MCP)
-  test-mcp           Test MCP server with curl (server must be running)
+
+Development:
+  mcp                Start the FastMCP server (default port 8000)
   lint               Run ruff linter
   format             Format code with ruff
-  help               Show this help message
+  type-check         Run mypy type checker
+  check-all          Run all checks (lint + type-check + test)
+
+Testing:
+  test               Run all pytest tests
+  test-unit          Run unit tests only (fast, no external deps)
+  test-integration   Run integration tests (may use external services)
+  test-local         Test services directly (without MCP)
+  test-mcp           Test MCP server with curl (server must be running)
 
 Setup:
   1. Run 'uv sync' to install dependencies

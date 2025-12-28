@@ -17,6 +17,25 @@ dev = [
     "ruff==0.8.4",
     "mypy==1.13.0",
     "pytest==8.3.4",
+    "pytest-asyncio==0.24.0",
+]
+
+# Observability (Phase 3+)
+observability = [
+    "langsmith>=0.1.0",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+]
+
+# AI Provider APIs (Future features)
+ai = [
+    "anthropic>=0.34.0",  # Claude API
+    "tiktoken>=0.5.0",    # OpenAI token counting
+]
+
+# All optional dependencies
+all = [
+    "productivity[dev,observability,ai]",
 ]
 
 [build-system]
@@ -55,3 +74,19 @@ check_untyped_defs = true
 no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+]
+markers = [
+    "unit: Unit tests (fast, no external dependencies)",
+    "integration: Integration tests (may use external services)",
+    "e2e: End-to-end tests (full system tests)",
+]
