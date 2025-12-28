@@ -27,7 +27,15 @@
       "Bash(az resource list:*)",
       "Bash(az cosmosdb sql database list:*)",
       "Bash(az cosmosdb sql container list:*)",
-      "Bash(az cosmosdb sql container show:*)"
+      "Bash(az cosmosdb sql container show:*)",
+      "Bash(echo $env:USERPROFILE.claude-codeconfig.json)",
+      "Write",
+      "Read",
+      "Edit",
+      "Bash(tree:*)",
+      "Bash(test -d \"C:\\\\projects\\\\productivity\\\\security\")",
+      "Bash(test:*)",
+      "Bash(git add:*)"
     ],
     "defaultMode": "acceptEdits"
   },
