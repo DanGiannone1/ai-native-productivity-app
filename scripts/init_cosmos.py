@@ -11,13 +11,13 @@ Usage:
 import sys
 from pathlib import Path
 
-# Add backend to Python path
-backend_path = Path(__file__).parent.parent / "backend"
-sys.path.insert(0, str(backend_path))
+# Add src to Python path
+src_path = Path(__file__).parent.parent / "src"
+sys.path.insert(0, str(src_path))
 
-from backend.config import Config
-from backend.cosmos_client import create_container_if_not_exists
-from backend.utils.errors import CosmosDBError
+from productivity_mcp.config import Config
+from productivity_mcp.cosmos_client import create_container_if_not_exists
+from productivity_mcp.utils.errors import CosmosDBError
 
 
 def main():

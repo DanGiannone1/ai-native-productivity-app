@@ -35,7 +35,10 @@
       "Bash(tree:*)",
       "Bash(test -d \"C:\\\\projects\\\\productivity\\\\security\")",
       "Bash(test:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nPhase 1: Establish README-first documentation structure\n\nAligned Prism with enterprise architecture documentation standards:\n\nDocumentation Structure:\n- Created 5 folder-level READMEs \\(src/, deployment/, security/, monitoring/, tests/\\)\n- Updated root README.md to serve as proper entrypoint with navigation links\n- Updated CLAUDE.md with enterprise template \\(RULE #1: README-first, complexity assessment, retrospective process\\)\n\nEnterprise Alignment Features Added:\n- README-first navigation pattern\n- Complexity assessment guidance \\(simple vs complex tasks\\)\n- Retrospective/codify step for continuous improvement\n- When fixing bugs: principle-based approach\n- Enhanced multi-agent workflow documentation\n\nThis completes ENTERPRISE_ALIGNMENT_PLAN.md Phase 1.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(powershell -File run_local.ps1:*)",
+      "Bash(Start-Sleep -Seconds 3)"
     ],
     "defaultMode": "acceptEdits"
   },

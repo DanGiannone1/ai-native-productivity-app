@@ -7,7 +7,7 @@ param(
 
 # Get project root
 $projectRoot = Get-Location
-$env:PYTHONPATH = Join-Path $projectRoot "backend"
+$env:PYTHONPATH = Join-Path $projectRoot "src"
 
 # Detect virtual environment Python
 $python = if ($IsWindows -or $env:OS -eq "Windows_NT") {
@@ -35,7 +35,7 @@ if (Test-Path ".env") {
 switch ($Command) {
     "mcp" {
         Write-Host "Starting MCP server on http://localhost:8000..." -ForegroundColor Cyan
-        & $python -m backend.mcp_server
+        & $python -m productivity_mcp.mcp_server
     }
     "setup" {
         Write-Host "Setting up Azure infrastructure..." -ForegroundColor Cyan
@@ -64,11 +64,11 @@ switch ($Command) {
     }
     "lint" {
         Write-Host "Running ruff linter..." -ForegroundColor Cyan
-        & $python -m ruff check backend/ scripts/
+        & $python -m ruff check src/productivity_mcp/ scripts/
     }
     "format" {
         Write-Host "Formatting code with ruff..." -ForegroundColor Cyan
-        & $python -m ruff format backend/ scripts/
+        & $python -m ruff format src/productivity_mcp/ scripts/
     }
     "migrate-serverless" {
         Write-Host "Migrating to serverless Cosmos DB..." -ForegroundColor Cyan

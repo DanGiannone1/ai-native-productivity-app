@@ -2,10 +2,10 @@
 import sys
 from pathlib import Path
 
-backend_path = Path(__file__).parent.parent / "backend"
-sys.path.insert(0, str(backend_path))
+src_path = Path(__file__).parent.parent / "src"
+sys.path.insert(0, str(src_path))
 
-from backend.cosmos_client import get_container
+from productivity_mcp.cosmos_client import get_container
 
 container = get_container()
 items = list(container.query_items(

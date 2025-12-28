@@ -12,12 +12,12 @@ import sys
 from pathlib import Path
 from datetime import datetime, timedelta
 
-# Add backend to Python path
-backend_path = Path(__file__).parent.parent / "backend"
-sys.path.insert(0, str(backend_path))
+# Add src to Python path
+src_path = Path(__file__).parent.parent / "src"
+sys.path.insert(0, str(src_path))
 
-from backend.config import Config
-from backend.services import schema_service, entity_service
+from productivity_mcp.config import Config
+from productivity_mcp.services import schema_service, entity_service
 
 USER_ID = Config.DEFAULT_USER_ID
 
