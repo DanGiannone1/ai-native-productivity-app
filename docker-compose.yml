@@ -1,0 +1,23 @@
+# Docker Compose for Prism MCP Server - Local Development
+# Usage: docker-compose up
+
+services:
+  prism-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=dev
+      - COSMOS_HOST=${COSMOS_HOST}
+      - COSMOS_KEY=${COSMOS_KEY}
+      - COSMOS_DATABASE=${COSMOS_DATABASE:-productivity}
+      - COSMOS_CONTAINER=${COSMOS_CONTAINER:-productivity-data}
+      - DISABLE_AUTH=true
+      - DEFAULT_USER_ID=local-dev
+      - LOG_LEVEL=DEBUG
+    env_file:
+      - .env
+      - .env.dev
+    restart: unless-stopped
