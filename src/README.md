@@ -1,7 +1,5 @@
 # Source Code - Productivity MCP Server
 
-> **Note**: This README documents the architecture currently implemented in `backend/`. In Phase 2, the codebase will be migrated to `src/productivity_mcp/` following enterprise standards.
-
 ## Overview
 
 This directory contains the **Productivity MCP Server** - an AI-driven, schema-flexible productivity system built with FastMCP and Azure Cosmos DB.
@@ -11,8 +9,6 @@ This directory contains the **Productivity MCP Server** - an AI-driven, schema-f
 - **MCP Protocol**: Exposes productivity tools via Model Context Protocol for AI agents.
 - **Cosmos DB Backend**: Multi-document NoSQL design partitioned by user ID.
 - **Python Stack**: FastMCP 2.2.0, Azure Cosmos SDK 4.7.0, Pydantic 2.10.4, Uvicorn.
-
-**Current Location**: `backend/` (will migrate to `src/productivity_mcp/` in Phase 2)
 
 ---
 
@@ -49,15 +45,16 @@ The system follows a **layered architecture** with clear separation of concerns:
 
 ## Module Organization
 
-Current structure (in `backend/`):
-
 ```
-backend/                     (Future: src/productivity_mcp/)
+src/productivity_mcp/
 │
 ├── mcp_server.py           # Main FastMCP server entry point
 │                           # - Exports 10 MCP tools (4 schema + 6 entity)
 │                           # - Logging configuration
 │                           # - ASGI app for Uvicorn
+│
+├── __main__.py             # Python module entry point
+│                           # - Enables: python -m productivity_mcp.mcp_server
 │
 ├── cosmos_client.py        # Singleton Cosmos DB client
 │                           # - get_cosmos_client(), get_database(), get_container()
@@ -65,7 +62,7 @@ backend/                     (Future: src/productivity_mcp/)
 │                           # - query_items with partition key support
 │
 ├── config.py               # Environment-based configuration
-│                           # - Loads .env file
+│                           # - Loads .env file (or .env.{ENVIRONMENT})
 │                           # - Validates required settings on import
 │                           # - Config.is_dev_mode() for auth bypass
 │
@@ -119,6 +116,7 @@ backend/                     (Future: src/productivity_mcp/)
     │                       # - EntityNotFoundError, EntityTypeNotFoundError
     │
     └── telemetry.py        # Logging and monitoring utilities
+                            # - Operation telemetry decorator (@with_telemetry)
                             # - Phase 2: Azure Monitor integration
 ```
 
@@ -322,7 +320,7 @@ From `schema/models.py`:
 
 ### Environment Variables
 
-Loaded from `.env` file via `python-dotenv`.
+Loaded from `.env` file (or `.env.{ENVIRONMENT}`) via `python-dotenv`.
 
 **Required**:
 - `COSMOS_HOST` - Cosmos DB endpoint (e.g., `https://myaccount.documents.azure.com:443/`)
@@ -362,9 +360,9 @@ Fail-fast approach prevents runtime errors.
 
 **Option 2: Direct Python**
 ```bash
-python -m backend.mcp_server
+python -m productivity_mcp.mcp_server
 # or
-uvicorn backend.mcp_server:app --host 0.0.0.0 --port 8000
+uvicorn productivity_mcp.mcp_server:app --host 0.0.0.0 --port 8000
 ```
 
 **Server Details**:
@@ -383,8 +381,8 @@ MCP tools are exposed via the MCP protocol. Test using:
 
 Example Python testing:
 ```python
-from backend.tools.schema_tools import create_entity_type_tool
-from backend.auth.dev_auth import get_current_user
+from productivity_mcp.tools.schema_tools import create_entity_type_tool
+from productivity_mcp.auth.dev_auth import get_current_user
 
 result = create_entity_type_tool(
     "task",
@@ -416,28 +414,9 @@ See `mcp_server.py` for detailed tool documentation.
 
 ---
 
-## Future Migration (Phase 2)
+## Future Enhancements (Phase 2+)
 
-### Directory Restructure
-
-**Current**: `backend/` (flat structure)
-**Phase 2**: `src/productivity_mcp/` (enterprise structure)
-
-```
-src/
-└── productivity_mcp/
-    ├── __init__.py
-    ├── server.py           (was: mcp_server.py)
-    ├── cosmos_db.py        (was: cosmos_client.py)
-    ├── config.py
-    ├── services/
-    ├── schema/
-    ├── tools/
-    ├── auth/               (add: OAuth implementation)
-    └── utils/
-```
-
-### Planned Enhancements
+### Planned Features
 
 1. **Authentication**: Replace `dev_auth.py` with Scalekit OAuth
 2. **Nested Schemas**: Support for `array` item types and `object` nested schemas
@@ -447,16 +426,6 @@ src/
 6. **Container Apps**: Deploy to Azure Container Apps (see `deployment/`)
 7. **Security**: Secrets in Azure Key Vault (see `security/`)
 
-### Migration Checklist
-
-- [ ] Move `backend/` → `src/productivity_mcp/`
-- [ ] Update import paths in all files
-- [ ] Update `pyproject.toml` `packages` config
-- [ ] Update `run_local.ps1` and deployment scripts
-- [ ] Add OAuth authentication via Scalekit
-- [ ] Integrate Azure Monitor telemetry
-- [ ] Update CI/CD pipelines
-
 ---
 
 ## Related Documentation
@@ -464,6 +433,7 @@ src/
 - **deployment/README.md** - Infrastructure setup (Cosmos DB, Container Apps, 3-RG silo)
 - **security/README.md** - OAuth configuration, secrets management, Key Vault (Phase 2)
 - **monitoring/README.md** - Azure Monitor, Application Insights, dashboards (Phase 2)
+- **tests/README.md** - Testing strategy and execution
 - **CLAUDE.md** - Project rules, multi-agent workflow, coding standards
 - **.claude/rules/guidelines.md** - Naming conventions, code structure
 - **.claude/rules/best-practices.md** - DRY, KISS, YAGNI, security practices
@@ -501,6 +471,5 @@ From `pyproject.toml`:
 
 ---
 
-*Last Updated: 2025-12-27*
-*Phase: 1 (Initial Implementation)*
-*Current Location: `backend/` → Phase 2 Migration: `src/productivity_mcp/`*
+*Last Updated: 2025-12-28*
+*Phase: 1 (MVP Complete) - Enterprise structure established in `src/productivity_mcp/`*

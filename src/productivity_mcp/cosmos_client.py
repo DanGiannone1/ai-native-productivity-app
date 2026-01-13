@@ -123,7 +123,7 @@ def create_container_if_not_exists() -> ContainerProxy:
             offer_throughput=400,  # Minimum RU/s for dev
         )
 
-        print(f"✓ Container '{Config.COSMOS_CONTAINER}' ready (partitioned by /userId)")
+        print(f"[OK] Container '{Config.COSMOS_CONTAINER}' ready (partitioned by /userId)")
         return container
 
     except Exception as e:

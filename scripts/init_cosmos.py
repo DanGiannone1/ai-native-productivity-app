@@ -40,7 +40,7 @@ def main():
 
         print()
         print("=" * 60)
-        print("✓ Initialization complete!")
+        print("[OK] Initialization complete!")
         print("=" * 60)
         print()
         print("Next steps:")
@@ -51,7 +51,7 @@ def main():
     except CosmosDBError as e:
         print()
         print("=" * 60)
-        print("✗ Initialization failed!")
+        print("[FAILED] Initialization failed!")
         print("=" * 60)
         print(f"Error: {e}")
         print()
@@ -64,7 +64,7 @@ def main():
     except ValueError as e:
         print()
         print("=" * 60)
-        print("✗ Configuration error!")
+        print("[ERROR] Configuration error!")
         print("=" * 60)
         print(f"Error: {e}")
         print()
