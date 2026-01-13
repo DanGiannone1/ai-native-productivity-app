@@ -1,4 +1,4 @@
-# Common Deployment Functions for Prism MCP Server
+# Common Deployment Functions for AI Productivity MCP Server
 # Shared functions for all deployment scripts
 
 # Read environment files and return hashtable

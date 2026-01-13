@@ -1,8 +1,8 @@
-# Docker Compose for Prism MCP Server - Local Development
+# Docker Compose for AI Productivity MCP Server - Local Development
 # Usage: docker-compose up
 
 services:
-  prism-mcp:
+  productivity-mcp:
     build:
       context: .
       dockerfile: Dockerfile

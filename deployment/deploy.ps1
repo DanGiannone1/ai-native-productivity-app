@@ -1,4 +1,4 @@
-# Deploy Script for Prism MCP Server
+# Deploy Script for AI Productivity MCP Server
 # Builds and deploys the MCP server to Azure Container Apps
 # Usage: .\deploy.ps1 -Environment <dev|prod> [-Version v1.0.0]
 
@@ -14,7 +14,7 @@ param(
 # Dot-source common functions
 . $PSScriptRoot\common.ps1
 
-Write-Host "Deploying Prism MCP Server for environment: $Environment" -ForegroundColor Cyan
+Write-Host "Deploying AI Productivity MCP Server for environment: $Environment" -ForegroundColor Cyan
 Write-Host ""
 
 # Read environment files (.env.[env] first, then .env for shared vars)
@@ -37,7 +37,7 @@ if (-not $RESOURCE_GROUP) {
 # Get ACR and image prefix
 $ACR_NAME = $envVars['ACR_NAME']
 $ACR_SERVER = $envVars['ACR_SERVER']
-$IMAGE_PREFIX = if ($envVars['IMAGE_PREFIX']) { $envVars['IMAGE_PREFIX'] } else { 'prism' }
+$IMAGE_PREFIX = if ($envVars['IMAGE_PREFIX']) { $envVars['IMAGE_PREFIX'] } else { 'ai-productivity' }
 
 # Get Container App Environment
 $CONTAINER_APP_ENV = "$($envVars['CONTAINER_APP_ENV'])-$Environment"
@@ -112,7 +112,7 @@ if (-not $appExists) {
         --ingress external `
         --min-replicas 0 `
         --max-replicas 1 `
-        --tags "Environment=$Environment" "Service=prism-mcp"
+        --tags "Environment=$Environment" "Service=ai-productivity-mcp"
 
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Failed to create Container App" -ForegroundColor Red

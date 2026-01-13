@@ -6,7 +6,7 @@
 
 ## Overview
 
-The Prism MCP Server deploys to Azure Container Apps with Cosmos DB backend. This guide covers both local development and cloud deployment.
+The AI Productivity MCP Server deploys to Azure Container Apps with Cosmos DB backend. This guide covers both local development and cloud deployment.
 
 **Deployment Strategy:**
 - **Local Development**: Docker Compose with Cosmos DB connection
@@ -63,18 +63,18 @@ cp example.env.dev .env.dev
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Shared Resource Group (prism-shared)                       │
+│  Shared Resource Group (ai-productivity-shared)             │
 │  └── Azure Container Registry (ACR)                         │
 ├─────────────────────────────────────────────────────────────┤
-│  Dev Resource Group (prism-dev)                             │
-│  ├── Cosmos DB Account (prism-cosmos-dev)                   │
+│  Dev Resource Group (ai-productivity-dev)                   │
+│  ├── Cosmos DB Account (ai-prod-cosmos-dev)                 │
 │  │   ├── Database: productivity                             │
 │  │   └── Container: productivity-data (PK: /userId)         │
-│  ├── Log Analytics Workspace (logs-prism-dev)               │
-│  ├── Container App Environment (prism-env-dev)              │
-│  └── Container App (prism-mcp-dev)                          │
+│  ├── Log Analytics Workspace (logs-ai-prod-dev)             │
+│  ├── Container App Environment (ai-prod-env-dev)            │
+│  └── Container App (ai-prod-mcp-dev)                        │
 ├─────────────────────────────────────────────────────────────┤
-│  Prod Resource Group (prism-prod) - Same structure          │
+│  Prod Resource Group (ai-productivity-prod) - Same structure│
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -98,17 +98,17 @@ cp example.env.dev .env.dev
 ```env
 ACR_NAME=your-acr-name
 ACR_SERVER=your-acr-name.azurecr.io
-RESOURCE_GROUP_SHARED=prism-shared
-CONTAINER_APP_ENV=prism-env
-MCP_APP_NAME=prism-mcp
+RESOURCE_GROUP_SHARED=ai-productivity-shared
+CONTAINER_APP_ENV=ai-prod-env
+MCP_APP_NAME=ai-prod-mcp
 COSMOS_DATABASE=productivity
 COSMOS_CONTAINER=productivity-data
 ```
 
 **In `.env.dev` or `.env.prod` (environment-specific):**
 ```env
-RESOURCE_GROUP=prism-dev
-COSMOS_HOST=https://prism-cosmos-dev.documents.azure.com:443/
+RESOURCE_GROUP=ai-productivity-dev
+COSMOS_HOST=https://your-cosmos-dev.documents.azure.com:443/
 COSMOS_KEY=your-cosmos-primary-key
 ```
 
@@ -176,7 +176,7 @@ After deploying, connect your MCP server to Foundry:
 
 1. Get your deployed URL:
    ```powershell
-   az containerapp show --name prism-mcp-dev --resource-group prism-dev --query "properties.configuration.ingress.fqdn" -o tsv
+   az containerapp show --name ai-prod-mcp-dev --resource-group ai-productivity-dev --query "properties.configuration.ingress.fqdn" -o tsv
    ```
 
 2. In Foundry portal:
@@ -220,7 +220,7 @@ az acr login --name your-acr-name
 **"Container App not starting":**
 ```powershell
 # Check logs
-az containerapp logs show --name prism-mcp-dev --resource-group prism-dev --follow
+az containerapp logs show --name ai-prod-mcp-dev --resource-group ai-productivity-dev --follow
 ```
 
 **"Cosmos connection refused":**
@@ -237,17 +237,17 @@ az acr repository list --name your-acr-name --output table
 
 ```powershell
 # Get Container App URL
-az containerapp show --name prism-mcp-dev --resource-group prism-dev --query "properties.configuration.ingress.fqdn" -o tsv
+az containerapp show --name ai-prod-mcp-dev --resource-group ai-productivity-dev --query "properties.configuration.ingress.fqdn" -o tsv
 
 # View Container App logs
-az containerapp logs show --name prism-mcp-dev --resource-group prism-dev --follow
+az containerapp logs show --name ai-prod-mcp-dev --resource-group ai-productivity-dev --follow
 
 # Restart Container App
-$revision = az containerapp revision list --name prism-mcp-dev --resource-group prism-dev --query "[0].name" -o tsv
-az containerapp revision restart --name prism-mcp-dev --resource-group prism-dev --revision $revision
+$revision = az containerapp revision list --name ai-prod-mcp-dev --resource-group ai-productivity-dev --query "[0].name" -o tsv
+az containerapp revision restart --name ai-prod-mcp-dev --resource-group ai-productivity-dev --revision $revision
 
 # List Cosmos DB keys
-az cosmosdb keys list --name prism-cosmos-dev --resource-group prism-dev
+az cosmosdb keys list --name ai-prod-cosmos-dev --resource-group ai-productivity-dev
 ```
 
 ---

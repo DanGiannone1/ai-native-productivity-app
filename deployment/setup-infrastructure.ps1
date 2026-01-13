@@ -1,4 +1,4 @@
-# Setup Infrastructure for Prism MCP Server
+# Setup Infrastructure for AI Productivity MCP Server
 # Creates all Azure infrastructure resources
 # Usage: .\setup-infrastructure.ps1 -Environment <dev|prod> [-Location westus2]
 
@@ -14,7 +14,7 @@ param(
 # Dot-source common functions
 . $PSScriptRoot\common.ps1
 
-Write-Host "Setting up Prism MCP Server Infrastructure..." -ForegroundColor Cyan
+Write-Host "Setting up AI Productivity MCP Server Infrastructure..." -ForegroundColor Cyan
 Write-Host "Environment: $Environment" -ForegroundColor Cyan
 Write-Host "Location: $Location" -ForegroundColor Cyan
 
@@ -64,7 +64,7 @@ if (Test-AzureResource -ResourceType "ACR" -ResourceName $ACR_NAME -ResourceGrou
 
 # --- Step 3: Log Analytics ---
 Write-Host "`nStep 3: Log Analytics Workspace" -ForegroundColor Cyan
-$laName = "logs-prism-$Environment"
+$laName = "logs-ai-prod-$Environment"
 if (-not (Test-AzureResource -ResourceType "LogAnalytics" -ResourceName $laName -ResourceGroup $RESOURCE_GROUP)) {
     Write-Host "  Creating Log Analytics '$laName'..." -ForegroundColor Yellow
     az monitor log-analytics workspace create --workspace-name $laName --resource-group $RESOURCE_GROUP --location $Location --output none
@@ -81,7 +81,7 @@ if (-not (Test-AzureResource -ResourceType "ContainerAppEnv" -ResourceName $caeN
 
 # --- Step 5: Cosmos DB ---
 Write-Host "`nStep 5: Cosmos DB Account" -ForegroundColor Cyan
-$cosmosName = "prism-cosmos-$Environment"
+$cosmosName = "ai-prod-cosmos-$Environment"
 
 if (-not (Test-AzureResource -ResourceType "CosmosDB" -ResourceName $cosmosName -ResourceGroup $RESOURCE_GROUP)) {
     Write-Host "  Creating Cosmos Account '$cosmosName'..." -ForegroundColor Yellow
@@ -97,7 +97,7 @@ if (-not (Test-AzureResource -ResourceType "CosmosDB" -ResourceName $cosmosName 
 Write-Host "  Ensuring Database '$COSMOS_DATABASE'..." -ForegroundColor Gray
 az cosmosdb sql database create --account-name $cosmosName --resource-group $RESOURCE_GROUP --name $COSMOS_DATABASE --output none 2>$null
 
-# Single container for Prism (partitioned by userId)
+# Single container for productivity data (partitioned by userId)
 Write-Host "  Ensuring Container '$COSMOS_CONTAINER' (PK: /userId)..." -ForegroundColor Gray
 az cosmosdb sql container create --account-name $cosmosName --resource-group $RESOURCE_GROUP --database-name $COSMOS_DATABASE --name $COSMOS_CONTAINER --partition-key-path /userId --output none 2>$null
 

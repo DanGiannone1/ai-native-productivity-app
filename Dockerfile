@@ -1,4 +1,4 @@
-# Prism MCP Server Dockerfile
+# AI Productivity MCP Server Dockerfile
 # Uses uv for fast, reproducible dependency management
 
 FROM python:3.12-slim

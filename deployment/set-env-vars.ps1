@@ -1,4 +1,4 @@
-# Set Environment Variables for Prism MCP Server
+# Set Environment Variables for AI Productivity MCP Server
 # Configures secrets and environment variables on the Azure Container App
 # Usage: .\set-env-vars.ps1 -Environment <dev|prod>
 
@@ -11,7 +11,7 @@ param(
 # Dot-source common functions
 . $PSScriptRoot\common.ps1
 
-Write-Host "Setting environment variables for Prism MCP Server ($Environment)..." -ForegroundColor Cyan
+Write-Host "Setting environment variables for AI Productivity MCP Server ($Environment)..." -ForegroundColor Cyan
 Write-Host ""
 
 # Read environment files
